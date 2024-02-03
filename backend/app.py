@@ -1,5 +1,5 @@
-from flask import Flask, render_template, send_from_directory
-import os
+from flask import Flask, render_template
+
 
 app = Flask(__name__, static_folder="../frontend/dist/assets", template_folder='../frontend/dist')
 
