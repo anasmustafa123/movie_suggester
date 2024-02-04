@@ -43,7 +43,7 @@ export default function Search({selectedType, setSelectedType}) {
 
   return (
     <section className="search">
-      <div className="container">
+      <div className="search-container container">
         <div id="alert"></div>
         <form onSubmit={hangleSubmit} className="search-form">
           <div className="search-radio">
