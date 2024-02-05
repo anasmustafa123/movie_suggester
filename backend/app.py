@@ -1,12 +1,25 @@
-from flask import Flask, render_template
-import os
+from flask import Flask, render_template, jsonify, request
+from mycode.fetch_suggestions import getMovieSuggestion, getShowsSuggestions
 
-app = Flask(__name__, static_folder="../frontend/dist/assets", template_folder='../frontend/dist')
+app = Flask(__name__)
 
 @app.route("/")
 def index():
     return render_template("index.html")
 
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 8080))
-    app.run(host='0.0.0.0', port=port, debug=True)
+
+@app.route('/api/get_suggestions/movies', methods=['POST'])
+def get_movies_suggestions():
+    rdata = request.get_json()
+    movie_title = rdata["title"]
+    print(movie_title)
+    result  = getMovieSuggestion(movie_title)
+    print(result)
+    return jsonify(result)
+
+@app.route('/api/get_suggestions/shows', methods=['POST'])
+def get_shows_suggestions():
+    rdata = request.get_json()
+    show_title = rdata["title"]
+    result  = getMovieSuggestion(show_title)
+    return jsonify(result)
