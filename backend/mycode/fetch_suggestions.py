@@ -23,11 +23,14 @@ def getMovieSuggestion(search_string):
     # Use the regex pattern to find movies with titles similar to the search string
     query = {"title": {"$regex": regex_pattern}}
     matching_movies = collection.find(query)
-
+    
     L = []
+    count = 0
     # Print the matching movies
-    for i in range (7):
-        L.append(matching_movies[i]['title'])
+    for movie in matching_movies:
+        if(count < 7):
+            L.append(movie['title'])
+            count += 1
 
     # Close the MongoDB connection
     client.close()
@@ -58,9 +61,12 @@ def getShowsSuggestions(search_string):
     matching_shows = collection.find(query)
 
     L = []
+    count = 0
     # Print the matching movies
-    for i in range (7):
-        L.append(matching_shows[i]['title'])
+    for show in matching_shows:
+        if(count < 7):
+            L.append(show['title'])
+            count += 1
 
     # Close the MongoDB connection
     client.close()

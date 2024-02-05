@@ -13,6 +13,7 @@ def get_movies_suggestions():
     rdata = request.get_json()
     movie_title = rdata["title"]
     print(movie_title)
+    print(type(movie_title))
     result  = getMovieSuggestion(movie_title)
     print(result)
     return jsonify(result)
@@ -21,5 +22,6 @@ def get_movies_suggestions():
 def get_shows_suggestions():
     rdata = request.get_json()
     show_title = rdata["title"]
-    result  = getMovieSuggestion(show_title)
+    result  = getShowsSuggestions(show_title)
     return jsonify(result)
+
