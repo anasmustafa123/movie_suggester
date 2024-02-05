@@ -1,9 +1,16 @@
 from pymongo import MongoClient
 import re
+from dotenv import load_dotenv
+import os
+
+# Load environment variables from .env
+load_dotenv()
+
 
 def getMovieSuggestion(search_string):
     # MongoDB connection details
-    uri = "mongodb+srv://anasmuostafa:anasanas123A@cluster0.zex5zoj.mongodb.net/?retryWrites=true&w=majority"
+    # access environment variables
+    uri = os.getenv("DATABASE_URI")
 
     # Connect to MongoDB
     client = MongoClient(uri)
