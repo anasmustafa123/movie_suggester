@@ -15,6 +15,13 @@ I wanted to make a project that i can use and also use machinelearning init
 ```
 
 ## Usage
+- doployment 
+>   frontend(react)   --> [vercel](https://vercel.com/)
+>   backend(flask)    --> [render.com](https://render.com/)
+>   database(mongodb) --> [atlas](https://www.mongodb.com/atlas/database)
+
+- loading svgs
+>   i used the cool library [react-loader-spinner](https://www.npmjs.com/package/react-loader-spinner)
 
 
 ## stack 

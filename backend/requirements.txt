@@ -3,3 +3,4 @@ Gunicorn
 pymongo
 python-dotenv
 flask-cors
+pandas
