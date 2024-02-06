@@ -3,7 +3,14 @@ import Autosuggest from "react-autosuggest";
 import axios from "axios";
 import { MagnifyingGlass } from "react-loader-spinner";
 
-export default function Search({ selectedType, setSelectedType }) {
+export default function Search({
+  selectedType,
+  setSelectedType,
+  setGetSimilar,
+  setLoadingSimilarData,
+  setSimilarData,
+  scrollToSimilarMovies,
+}) {
   const [search, setSearch] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [loading, setloading] = useState(false);
@@ -16,16 +23,39 @@ export default function Search({ selectedType, setSelectedType }) {
     setSelectedType(event.target.value);
   };
 
-  const hangleSubmit = (event) => {
+  const hangleSubmit = async (event) => {
     event.preventDefault();
+    let response;
+    setLoadingSimilarData(true);
+    setGetSimilar(true);
+    scrollToSimilarMovies();
     // Handle form submission, e.g., make API request with search and selectedType
+    try {
+      const api_url =
+        import.meta.env.VITE_SATATE == "production"
+          ? import.meta.env.VITE_API_URL
+          : import.meta.env.VITE_DEV_API_URL;
+      let apiroute =
+        selectedType == "movie" ? "/api/similar_movies" : "/api/similar_shows";
+      const res = await axios.post(
+        `${api_url}${apiroute}`,
+        { title: search, n: 13 },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      response = await res.data;
+      setSimilarData(response);
+      setLoadingSimilarData(false);
+    } catch (error) {}
   };
 
   // Fetch suggestions based on the current input value
   const onSuggestionsFetchRequested = async ({ value }) => {
     // Implement your logic to fetch suggestions (e.g., from an API)
     // and update the suggestions state.
-    console.log(value);
     setloading(true);
     if (value.length > 3) {
       const api_url =
@@ -34,8 +64,8 @@ export default function Search({ selectedType, setSelectedType }) {
           : import.meta.env.VITE_DEV_API_URL;
       let apiroute =
         selectedType == "movie"
-          ? "/api/get_suggestions/movies"
-          : "/api/get_suggestions/shows";
+          ? "/api/autocomplete_movies"
+          : "/api/autocomplete_shows";
       try {
         let response;
         const res = await axios.post(
