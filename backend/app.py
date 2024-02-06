@@ -6,7 +6,7 @@ from flask_cors import CORS
 app = Flask(__name__)
 
 # Enable CORS for requests from 
-CORS(app, resources={r"/*": {"origins": "https://movie-suggester-2rb6j1jht-anasmustafas-projects.vercel.app"}})
+CORS(app, resources={r"/*": {"origins": "https://movie-suggester-dun.vercel.app"}})
 
 @app.route("/")
 def index():
