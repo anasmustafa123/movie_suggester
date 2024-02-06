@@ -2,12 +2,12 @@ from flask import Flask, render_template, jsonify, request
 from mycode.fetch_suggestions import getMovieSuggestion, getShowsSuggestions
 from mycode.getSimilar import getSimilarMovies, getSimilarShows
 from flask_cors import CORS
-from flask_executor import Executor
+
 app = Flask(__name__)
-executor = Executor(app)
 
 # Enable CORS for requests from 
 CORS(app, resources={r"/*": {"origins": "https://movie-suggester-dun.vercel.app"}})
+
 @app.route("/")
 def index():
     return render_template("index.html")
@@ -40,15 +40,14 @@ def get_similar_movies():
         rdata = request.get_json()
         movie_title = rdata["title"]
         n = rdata['n']
-
-        # Execute the getSimilarMovies function asynchronously
-        future = executor.submit(getSimilarMovies, movie_title, n)
-
-        # Return an immediate response to the client
-        return jsonify({'message': 'Task started successfully.'}), 202
-
+        print("Received query:", movie_title)
+        result = getSimilarMovies(movie_title, n)
+        print("Generated suggestions:", result)
+        return jsonify(result)
     except Exception as e:
-        return jsonify({'error': str(e)}), 500
+        print("Error:", e)
+        return jsonify([])
+
 
 @app.route('/api/similar_shows', methods=['POST'])
 def get_similar_shows():
@@ -56,13 +55,9 @@ def get_similar_shows():
         rdata = request.get_json()
         show_title = rdata["title"]
         n = rdata['n']
-
-        # Execute the getSimilarShows function asynchronously
-        future = executor.submit(getSimilarShows, show_title, n)
-
-        # Return an immediate response to the client
-        return jsonify({'message': 'Task started successfully.'}), 202
-
+        result  = getSimilarShows(show_title, n)
+        return jsonify(result)
     except Exception as e:
-        return jsonify({'error': str(e)}), 500
+        print('Error: ', e)
+        return jsonify([])
 
