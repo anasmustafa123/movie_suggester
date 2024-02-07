@@ -2,8 +2,14 @@ from flask import Flask, render_template, jsonify, request
 from mycode.fetch_suggestions import getMovieSuggestion, getShowsSuggestions
 from mycode.getSimilar import getSimilarMovies, getSimilarShows
 from flask_cors import CORS
+from dotenv import load_dotenv
+import os
 
 app = Flask(__name__)
+# loading environment variables
+load_dotenv()
+
+app.config['DEBUG'] = os.environ.get('FLASK_DEBUG')
 
 # Enable CORS for requests from 
 CORS(app, resources={r"/*": {"origins": "https://movie-suggester-dun.vercel.app"}})
@@ -61,3 +67,5 @@ def get_similar_shows():
         print('Error: ', e)
         return jsonify([])
 
+if __name__ == '__main__':
+    app.run()
