@@ -4,6 +4,7 @@ from mycode.getSimilar import getSimilarMovies, getSimilarShows
 from flask_cors import CORS
 from dotenv import load_dotenv
 import os
+from mycode.fetch_dataframe_from_db import getshowsdataframe, getmoviesdataframe
 
 app = Flask(__name__)
 # loading environment variables
@@ -12,7 +13,7 @@ load_dotenv()
 app.config['DEBUG'] = os.environ.get('FLASK_DEBUG')
 
 # Enable CORS for requests from 
-CORS(app, resources={r"/*": {"origins": "https://movie-suggester-dun.vercel.app"}})
+CORS(app, resources={r"/*": {"origins": os.environ.get('FRONTEND_URL')}})
 
 @app.route("/")
 def index():
@@ -39,6 +40,15 @@ def get_shows_suggestions():
     result  = getShowsSuggestions(show_title)
     return jsonify(result)
 
+@app.route('/api/get_movies', methods=['POST'])
+def getAllMovies():
+    movies = getmoviesdataframe()
+    return movies['title'].values.tolist()
+
+@app.route('/api/get_shows', methods=['POST'])
+def getAllShows():
+    shows = getshowsdataframe()
+    return shows['title'].values.tolist()
 
 @app.route('/api/similar_movies', methods=['POST'])
 def get_similar_movies():
