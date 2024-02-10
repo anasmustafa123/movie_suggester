@@ -10,11 +10,42 @@ I wanted to make a project that i can use and also use machinelearning init
 - [MtvInsight]() 
 
 ### Install Locally
-```python
+-
+#### Backend Installation:
+```bash
+# Move to the backend directory
+cd backend
 
+# Install Python dependencies using pip
+pip install -r requirements.txt
+```
+#### Run Backend Server
+```bash
+# Start the Flask server in development mode
+flask run
+```
+#### Frontend Installation:
+```bash
+# Move to the frontend directory
+cd frontend
+
+# Install Node.js dependencies using npm
+npm install
+```
+#### Run Frontend Server locally
+```bash
+#run the server in development
+npm run dev
 ```
 
 ## Usage
+- dataset
+    option 1: installing manually using [tmdbapi]() ==Warning== it takes alot of time to fetch all the data manually.
+    code for fetching the movies, tvshow data from []()
+    code for preparing and processing the similarities in jupiter notebook [movie](), [shows]()
+
+    option 2: you can access the the dataset directly from [tmdb]() dataset a collection of 5k movies
+    code for preparing and processing the similarities in jupiter notebook [movie]() [shows]()
 - doployment 
 >   frontend(react)   --> [vercel](https://vercel.com/)
 >   backend(flask)    --> [render.com](https://render.com/)
