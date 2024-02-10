@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import Autosuggest from "react-autosuggest";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { MagnifyingGlass } from "react-loader-spinner";
 
@@ -12,11 +11,47 @@ export default function Search({
   scrollToSimilarMovies,
 }) {
   const [search, setSearch] = useState("");
-  const [suggestions, setSuggestions] = useState([]);
   const [loading, setloading] = useState(false);
+  const [allMovies, setAllMovies] = useState([]);
+  const [allShows, setAllShows] = useState([]);
 
-  const handleSetSearch = (event, { newValue }) => {
-    setSearch(newValue);
+  useEffect(() => {
+    async function fetchData() {
+      setloading(true);
+      const api_url =
+        import.meta.env.VITE_SATATE == "production"
+          ? import.meta.env.VITE_API_URL
+          : import.meta.env.VITE_DEV_API_URL;
+      const movieRes = await axios.post(
+        `${api_url}/api/get_movies`,
+        {},
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      setAllMovies(await movieRes.data);
+      if (selectedType === "movie") {
+        setloading(false);
+      }
+      const showRes = await axios.post(
+        `${api_url}/api/get_shows`,
+        {},
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      setAllShows(await showRes.data);
+      setloading(false);
+    }
+    fetchData();
+  }, []);
+
+  const handleSetSearch = (event) => {
+    setSearch(event.target.value);
   };
 
   const handleSetSelectedType = (event) => {
@@ -52,58 +87,16 @@ export default function Search({
     } catch (error) {}
   };
 
-  // Fetch suggestions based on the current input value
-  const onSuggestionsFetchRequested = async ({ value }) => {
-    // Implement your logic to fetch suggestions (e.g., from an API)
-    // and update the suggestions state.
-    setloading(true);
-    if (value.length > 3) {
-      const api_url =
-        import.meta.env.VITE_SATATE == "production"
-          ? import.meta.env.VITE_API_URL
-          : import.meta.env.VITE_DEV_API_URL;
-      let apiroute =
-        selectedType == "movie"
-          ? "/api/autocomplete_movies"
-          : "/api/autocomplete_shows";
-      try {
-        let response;
-        const res = await axios.post(
-          `${api_url}${apiroute}`,
-          {
-            title: value,
-          },
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-        response = await res.data;
-        setloading(false);
-        setSuggestions(response);
-      } catch {
-        console.error("Error posting data:");
-      }
-    }
-    console.error("No posting data:");
-  };
-  // Clear suggestions when the input is cleared
-  const onSuggestionsClearRequested = () => {
-    setSuggestions([]);
-  };
-
-  // Render suggestion
-  const renderSuggestion = (suggestion) => {
-    return <div>{suggestion}</div>;
-  };
-
   const inputProps = {
     placeholder: "Enter search term",
     value: search,
     onChange: handleSetSearch,
   };
-
+  function onSuggestionsFetchRequested(list) {
+    return list.filter((str) => {
+      return str.toLowerCase().includes(search.toLowerCase());
+    });
+  }
   return (
     <section className="search">
       <div className="search-container container">
@@ -130,18 +123,40 @@ export default function Search({
             <label htmlFor="tv">TV Shows</label>
           </div>
           <div className="search-flex">
-            <Autosuggest
-              suggestions={suggestions}
-              onSuggestionsFetchRequested={onSuggestionsFetchRequested}
-              onSuggestionsClearRequested={onSuggestionsClearRequested}
-              getSuggestionValue={(suggestion) => suggestion}
-              renderSuggestion={renderSuggestion}
-              inputProps={inputProps}
+            <input
+              autocomplete="off"
+              type="text"
+              id="myInput"
+              onChange={(e) => {
+                handleSetSearch(e);
+              }}
+              value={search}
+              placeholder="Search for names.."
             />
             <button className="btn" type="submit">
               <i className="fas fa-search"></i>
             </button>
           </div>
+          {search !== "" && (
+            <ul id="myUL">
+              {selectedType === "movie"
+                ? onSuggestionsFetchRequested(allMovies)
+                    .slice(0, 7)
+                    .map((v, i) => (
+                      <li onClick={() => setSearch(v)} key={i}>
+                        <a href="#">{v}</a>
+                      </li>
+                    ))
+                : onSuggestionsFetchRequested(allShows)
+                    .slice(0, 7)
+                    .map((v, i) => (
+                      <li key={i}>
+                        <a href="#">{v}</a>
+                      </li>
+                    ))}
+            </ul>
+          )}
+
           {loading && (
             <MagnifyingGlass
               visible={true}

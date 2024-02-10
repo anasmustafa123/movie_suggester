@@ -34,3 +34,5 @@ __pycache__/
 /backend/.dockerignore
 /backend/Dockerfile
 /backend/.gcloudignore
+/backend/mycode/movie_sim.pkl
+/backend/mycode/show_sim.pkl
