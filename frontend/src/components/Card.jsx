@@ -1,9 +1,9 @@
 import React from "react";
 
-export default function Card({key, data}) {
+export default function Card({key, data, tmdbLinkPrefix}) {
   return (
     <div key={key} class="card">
-      <a href="movie-details.html?id=949567">
+      <a href={tmdbLinkPrefix+data.id} target="_blank">
         <img
           src={data["poster_path"]}
           class="card-img-top"
