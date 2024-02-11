@@ -12,9 +12,6 @@ export default function Card({key, data}) {
       </a>
       <div class="card-body">
         <h5 class="card-title">{data.title}</h5>
-        <p class="card-text">
-          <small class="text-muted">Release: 2022-03-14</small>
-        </p>
       </div>
     </div>
   );
