@@ -150,7 +150,7 @@ export default function Search({
                 : onSuggestionsFetchRequested(allShows)
                     .slice(0, 7)
                     .map((v, i) => (
-                      <li key={i}>
+                      <li onClick={() => setSearch(v)} key={i}>
                         <a href="#">{v}</a>
                       </li>
                     ))}
