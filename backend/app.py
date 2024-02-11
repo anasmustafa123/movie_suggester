@@ -43,12 +43,12 @@ def get_shows_suggestions():
 @app.route('/api/get_movies', methods=['POST'])
 def getAllMovies():
     movies = getmoviesdataframe()
-    return movies['title'].values.tolist()
+    return jsonify(movies['title'].values.tolist())
 
 @app.route('/api/get_shows', methods=['POST'])
 def getAllShows():
     shows = getshowsdataframe()
-    return shows['title'].values.tolist()
+    return jsonify(shows['title'].values.tolist())
 
 @app.route('/api/similar_movies', methods=['POST'])
 def get_similar_movies():
