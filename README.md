@@ -1,5 +1,8 @@
 # [MtvInsight]()  
 
+[![image 1](./images/img1.png)]
+[![image 2](./images/img2.png)]
+
 ## Description
 MtvInsight is a movie and TV shows prediction website that leverages a dataset comprising 10k movies and 11k TV shows manually collected from [The Movie Database](https://developer.themoviedb.org/docs/getting-started). The prediction process involves converting each movie or TV show into a vector and determining their similarity based on the direction of these vectors. A small angle between vectors indicates similarity in content.
 
@@ -7,7 +10,7 @@ MtvInsight is a movie and TV shows prediction website that leverages a dataset c
 I wanted to make a project that i can use and also use machinelearning init
 
 ## Quick Start
-- [MtvInsight]() 
+- [MtvInsight](https://movie-suggester-dun.vercel.app) 
 
 ### Install Locally
 -
@@ -48,7 +51,7 @@ npm run dev
     code for preparing and processing the similarities in jupiter notebook [movie]() [shows]()
 - doployment 
 >   frontend(react)   --> [vercel](https://vercel.com/)
->   backend(flask)    --> [render.com](https://render.com/)
+>   backend(flask)    --> [google-cloud](https://console.cloud.google.com)
 >   database(mongodb) --> [atlas](https://www.mongodb.com/atlas/database)
 
 - loading svgs
